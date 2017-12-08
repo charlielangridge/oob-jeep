@@ -42,7 +42,7 @@ def my_callback(channel):
 
         # Trigger Smoke
         GPIO.output(20, GPIO.HIGH)
-        time.sleep(2)
+        time.sleep(5)
         GPIO.output(20, GPIO.LOW)
 
         # wait until effct music is finsihed
