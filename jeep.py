@@ -42,18 +42,19 @@ def my_callback(channel):
 
         # Trigger Smoke
         GPIO.output(20, GPIO.HIGH)
-        time.sleep(5)
+        time.sleep(3)
         GPIO.output(20, GPIO.LOW)
 
         # wait until effct music is finsihed
         time.sleep(effect.get_length() - 2)
-
+        time.sleep(5)
+        
         #Unpause background music
         bg.unpause()
         vol_ramp(background)
 
         # Reset pause
-        time.sleep(4)
+        time.sleep(10)
         fxsequence = 0
     else:
         print ("FX Sequence already in progress")
