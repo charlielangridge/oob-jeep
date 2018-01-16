@@ -28,42 +28,8 @@ def vol_ramp(sound):
 # now we'll define the threaded callback function
 # this will run in another thread when our event is detected
 def my_callback(channel):
-    global time_stamp
-    time_now = time.time()
-    if (time_now - time_stamp) >= 1:
-        global fxsequence
-        # Ball trigger run code
-        if fxsequence == 0:
-            
-            fxsequence = 1
-            print ("Ball detected")
-
-            #Pause background music
-            bg.pause()
-
-            #Play sound effect
-            fx.play(effect)
-
-            # Trigger Smoke
-            GPIO.output(20, GPIO.HIGH)
-            time.sleep(2)
-            GPIO.output(20, GPIO.LOW)
-
-            # wait until effct music is finsihed
-            time.sleep(effect.get_length() - 2)
-            
-            
-            #Unpause background music
-            bg.unpause()
-            vol_ramp(background)
-
-            # Reset pause
-            
-            fxsequence = 0
-            print (fxsequence)
-        else:
-            print ("FX Sequence already in progress")
-    time_stamp = time_now
+	global fxsequence
+    fxsequence = 1
     
 # Initialise the audio mixer
 print ("Initialise mixer")
@@ -97,7 +63,30 @@ try:
         if fxsequence == 0:
             print ("Awaiting Ball")
         else:
-            print("FX Sequence in progress")
+            print ("FX Sequence")
+
+            #Pause background music
+            bg.pause()
+
+            #Play sound effect
+            fx.play(effect)
+
+            # Trigger Smoke
+            GPIO.output(20, GPIO.HIGH)
+            time.sleep(2)
+            GPIO.output(20, GPIO.LOW)
+
+            # wait until effct music is finsihed
+            time.sleep(effect.get_length() - 2)
+            
+            
+            #Unpause background music
+            bg.unpause()
+            vol_ramp(background)
+
+            # Reset pause
+            time.sleep(10)
+            fxsequence = 0
         time.sleep(1)
 
 
