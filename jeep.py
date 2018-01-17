@@ -7,12 +7,13 @@ import pygame
 GPIO.setmode(GPIO.BCM)
 
 # Setup the IR sensor on PIN 22 (BCM)
-GPIO.setup(21, GPIO.IN, pull_up_down=GPIO.PUD_UP)
+GPIO.setup(26, GPIO.IN, pull_up_down=GPIO.PUD_UP)
 
 # Setup the relay output on PIN 20 (BCM)
 GPIO.setup(20, GPIO.OUT)
 time_stamp = time.time()
 # setup fxsequence variable
+global fxsequence
 fxsequence = 0
 
 # Raise vol over time
@@ -28,7 +29,8 @@ def vol_ramp(sound):
 # now we'll define the threaded callback function
 # this will run in another thread when our event is detected
 def my_callback(channel):
-	global fxsequence
+    print ("Ball detected")
+    global fxsequence
     fxsequence = 1
     
 # Initialise the audio mixer
@@ -56,14 +58,14 @@ bg.play(background, loops=-1)
 # else is happening in the program, the function "my_callback" will be run
 # It will happen even while the program is waiting for
 # a falling edge on the other button.
-GPIO.add_event_detect(21, GPIO.RISING, callback=my_callback, bouncetime=200)
+GPIO.add_event_detect(26, GPIO.BOTH, callback=my_callback)
 
 try:
     while True:
         if fxsequence == 0:
             print ("Awaiting Ball")
         else:
-            print ("FX Sequence")
+            print ("FX Seq")
 
             #Pause background music
             bg.pause()
@@ -78,14 +80,14 @@ try:
 
             # wait until effct music is finsihed
             time.sleep(effect.get_length() - 2)
-            
+            time.sleep(5)
             
             #Unpause background music
             bg.unpause()
             vol_ramp(background)
 
             # Reset pause
-            time.sleep(10)
+            time.sleep(5)
             fxsequence = 0
         time.sleep(1)
 
